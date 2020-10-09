@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class NewBehaviourScript : MonoBehaviour
     private int count;
     private float movementX;
     private float movementY;
+    public GameObject blocks;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         SetCountText();
         winTextObject.SetActive(false);
+         
     }
 
     private void OnMove(InputValue movementValue)
@@ -31,12 +35,13 @@ public class NewBehaviourScript : MonoBehaviour
 
         movementX = movementVector.x;
         movementY = movementVector.y;
+
     }
 
     void SetCountText()
     {
         countText.text  = "Count: " + count.ToString();
-        if(count >= 16)
+        if(count >= 18)
         {
             winTextObject.SetActive(true);
         }
@@ -47,6 +52,8 @@ public class NewBehaviourScript : MonoBehaviour
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 
         rb.AddForce(movement * speed);
+
+      
     }
 
     private void OnTriggerEnter(Collider other)
@@ -57,6 +64,15 @@ public class NewBehaviourScript : MonoBehaviour
             count = count + 1;
 
             SetCountText();
+        }
+    }
+
+    void OnCollisionEnter(Collision exampleCol)
+    {
+        if (exampleCol.collider.tag == "blocks")
+        {
+            //Replace 'Game Over' with your game over scene's name.
+            SceneManager.LoadScene("Minigame");
         }
     }
 }
